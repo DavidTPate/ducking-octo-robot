@@ -20,3 +20,4 @@ classes
 *.iml
 classes
 gen-external-apklibs
+.idea/gradle.xml
