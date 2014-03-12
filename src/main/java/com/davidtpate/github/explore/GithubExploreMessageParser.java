@@ -3,7 +3,7 @@ package com.davidtpate.github.explore;
 
 import com.davidtpate.github.explore.exception.HaltProcessingException;
 import com.davidtpate.github.explore.model.Field;
-import com.davidtpate.github.explore.model.Message;
+import com.davidtpate.github.explore.model.GithubExploreMessage;
 import com.davidtpate.github.explore.model.Repository;
 import com.davidtpate.github.explore.util.Strings;
 import com.davidtpate.github.explore.util.Util;
@@ -14,7 +14,7 @@ import java.text.SimpleDateFormat;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class GithubExploreParser {
+public class GithubExploreMessageParser extends MessageParser<GithubExploreMessage> {
     /**
      * We want to restrict the messages we look at to only those that are claimed to be from Github.
      */
@@ -35,19 +35,7 @@ public class GithubExploreParser {
      * Beginning part of the Plaintext section for "Stars from GitHub Staff"
      */
     private static final String GITHUB_STAFF_PREFIX = "Stars from GitHub Staff";
-    /**
-     * MIME Separator for parsing through the email.
-     */
-    private static final String MIME_PREFIX = "----==_mimepart";
-    /**
-     * The Plaintext Content Type
-     */
-    private static final String CONTENT_TYPE_PLAIN = "text/plain;";
-    /**
-     * The HTML Content Type
-     */
-    private static final String CONTENT_TYPE_HTML = "text/html;";
-    Message.Builder mMessageBuilder = new Message.Builder();
+    GithubExploreMessage.Builder mMessageBuilder = new GithubExploreMessage.Builder();
     Repository.Builder mRepositoryBuilder = new Repository.Builder();
     /**
      * Pattern for matching the Plaintext repository list items. Matches strings like "1." and "12.", the period is required.
@@ -62,12 +50,8 @@ public class GithubExploreParser {
      * type: Java
      */
     private Pattern mPlainTextRepositoryItemPattern = Pattern.compile("^[\\d]+\\. (https://github.com/(.*/.*)) (.*)?$");
-    /**
-     * The header should always be first.
-     */
-    private ReaderLocation readerLocation = ReaderLocation.HEADER;
 
-    public Message parse(String path) throws FileNotFoundException, IllegalArgumentException {
+    public GithubExploreMessage parse(String path) throws FileNotFoundException, IllegalArgumentException {
         // If we don't have a path to anything, no point in continuing.
         if (Strings.isEmpty(path)) {
             throw new IllegalArgumentException("Path is Null or Blank");
@@ -82,7 +66,7 @@ public class GithubExploreParser {
         return parseMessage(new FileReader(path));
     }
 
-    private Message parseMessage(FileReader fileReader) {
+    private GithubExploreMessage parseMessage(FileReader fileReader) {
         // This can only be called internally so inputStream should never be null, but just in case.
         if (fileReader == null) {
             return null;
@@ -123,7 +107,6 @@ public class GithubExploreParser {
                             } else if (line.startsWith(POPULAR_PREFIX)) {
                                 parseRepositoryList(reader, RepositoryListType.POPULAR);
                             }
-                            System.out.println(line);
                         }
                         break;
                     case HTML_BODY:
@@ -246,7 +229,6 @@ public class GithubExploreParser {
             return;
         }
 
-        //System.out.println("Name: " + field.getName() + " Value: " + field.getValue());
         Header header = Header.findHeader(field.getName());
 
         // If we didn't resolve the header, then we don't need to pay attention to it.
@@ -279,10 +261,6 @@ public class GithubExploreParser {
 
     public enum RepositoryListType {
         SOCIAL, POPULAR, STAFF;
-    }
-
-    public enum ReaderLocation {
-        HEADER, PLAINTEXT_BODY, HTML_BODY;
     }
 
     public enum Header {

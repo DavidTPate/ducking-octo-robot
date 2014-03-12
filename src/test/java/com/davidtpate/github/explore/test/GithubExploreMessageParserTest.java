@@ -1,15 +1,15 @@
 package com.davidtpate.github.explore.test;
 
-import com.davidtpate.github.explore.GithubExploreParser;
+import com.davidtpate.github.explore.GithubExploreMessageParser;
 import org.junit.Assert;
 import org.junit.Test;
 
 import java.io.FileNotFoundException;
 
-public class GithubExploreParserTest {
+public class GithubExploreMessageParserTest {
     @Test
     public void testBadFilename() {
-        GithubExploreParser parser = new GithubExploreParser();
+        GithubExploreMessageParser parser = new GithubExploreMessageParser();
         try {
             System.out.println(parser.parse(""));
             // If we reach here, we've failed. It should throw an IllegalArgumentException
@@ -24,7 +24,7 @@ public class GithubExploreParserTest {
 
     @Test
     public void testMissingFile() {
-        GithubExploreParser parser = new GithubExploreParser();
+        GithubExploreMessageParser parser = new GithubExploreMessageParser();
         try {
             System.out.println(parser.parse("src/test/resources/Example-Fail.msg"));
             // If we reach here, we've failed. It should throw an IllegalArgumentException
@@ -39,7 +39,7 @@ public class GithubExploreParserTest {
 
     @Test
     public void testExampleMessage() {
-        GithubExploreParser parser = new GithubExploreParser();
+        GithubExploreMessageParser parser = new GithubExploreMessageParser();
         try {
             System.out.println(parser.parse("src/test/resources/Example.msg"));
         } catch (FileNotFoundException e) {
