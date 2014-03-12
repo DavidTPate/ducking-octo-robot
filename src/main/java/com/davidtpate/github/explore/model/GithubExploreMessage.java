@@ -4,17 +4,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class GithubExploreMessage {
-    private String subject;
-    private String to;
-    private Date date;
+public class GithubExploreMessage extends Message {
     private List<Repository> socialRepositoryList;
     private List<Repository> popularRepositoryList;
     private List<Repository> staffRepositoryList;
-
-    public String getSubject() {
-        return subject;
-    }
 
     public List<Repository> getSocialRepositoryList() {
         return socialRepositoryList;

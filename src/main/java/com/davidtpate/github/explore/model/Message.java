@@ -1,7 +1,21 @@
 package com.davidtpate.github.explore.model;
 
-/**
- * Created by David on 3/12/14.
- */
-public class Message {
+import java.util.Date;
+
+public abstract class Message {
+    protected String subject;
+    protected String to;
+    protected Date date;
+
+    public String getSubject() {
+        return subject;
+    }
+
+    public String getTo() {
+        return to;
+    }
+
+    public Date getDate() {
+        return date;
+    }
 }
