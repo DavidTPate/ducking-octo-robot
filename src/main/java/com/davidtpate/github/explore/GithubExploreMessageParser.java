@@ -246,6 +246,7 @@ public class GithubExploreMessageParser extends MessageParser<GithubExploreMessa
                 if (!GITHUB_FROM.equalsIgnoreCase(value)) {
                     throw new HaltProcessingException();
                 }
+                mMessageBuilder.from(value);
                 break;
             case SUBJECT:
                 if (!value.startsWith(GITHUB_SUBJECT)) {

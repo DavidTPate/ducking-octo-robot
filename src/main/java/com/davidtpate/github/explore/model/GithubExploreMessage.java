@@ -26,6 +26,7 @@ public class GithubExploreMessage extends Message {
         return "GithubExploreMessage{" +
                 "subject='" + subject + '\'' +
                 ", to='" + to + '\'' +
+                ", from='" + from + '\'' +
                 ", date=" + date +
                 ", socialRepositoryList=" + socialRepositoryList +
                 ", popularRepositoryList=" + popularRepositoryList +
@@ -35,6 +36,11 @@ public class GithubExploreMessage extends Message {
 
     public static class Builder {
         private GithubExploreMessage message = new GithubExploreMessage();
+
+        public Builder from(String from) {
+            message.from = from;
+            return this;
+        }
 
         public Builder to(String to) {
             message.to = to;
